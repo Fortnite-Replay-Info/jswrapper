@@ -71,4 +71,61 @@ export class Client {
         })
         return res.data;
     }
+    /**
+     * Get Matches of a given player
+     * @param player Username of the player to get matches from
+     * @param version Optionnal version option
+     * @param page Optionnal page option
+     * @returns {Object}
+     */
+    public async getMatches(player:string, version:string, page:number = 0) {
+        if(!player) throw new Error("Please provide a player username")
+        const res = await axios.get(`https://fortnite-replay.info/api/v1/player/search/${player}/matches`, {
+            params : {
+                version
+            }
+        })
+        .catch((e) => {
+            throw new Error(e);
+        })
+        return res.data;
+    }
+    /**
+     * Get Stats of a given player
+     * @param player Username of the player to get stats from
+     * @param version Optionnal version option
+     * @param page Optionnal page option
+     * @returns {Object}
+     */
+    public async getStats(player:string, version:string, page:number = 0) {
+        if(!player) throw new Error("Please provide a player username")
+        const res = await axios.get(`https://fortnite-replay.info/api/v1/player/search/${player}/stats`, {
+            params : {
+                version
+            }
+        })
+        .catch((e) => {
+            throw new Error(e);
+        })
+        return res.data;
+    }
+    /**
+     * Get Tournaments of a given player
+     * @param player Username of the player to get tournaments from
+     * @param version Optionnal version option
+     * @param page Optionnal page option
+     * @returns {Object}
+     */
+    public async getTournaments(player:string, version:string, page:number = 0) {
+        if(!player) throw new Error("Please provide a player username")
+        const res = await axios.get(`https://fortnite-replay.info/api/v1/player/search/${player}/tournaments`, {
+            params : {
+                version
+            }
+        })
+        .catch((e) => {
+            throw new Error(e);
+        })
+        return res.data;
+    }
 }
