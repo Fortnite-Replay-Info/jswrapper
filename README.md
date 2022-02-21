@@ -13,7 +13,7 @@ npm install fortnite-replay-info
 ```javascript
 const replayInfo = require('fortnite-replay-info');
 const client = new replayInfo.Client("Your API Key (PUT RANDOM STRING, not used yet)");
-client.getCosmetics().then(console.log);
+client.getLifetimeCosmetics().then(console.log);
 ```
 
 ## API
@@ -31,6 +31,12 @@ You can contact us on Discord if you want to work on features or push a pull req
 The project is lead by Xnocken and is also developped by Artlfmj and pxladin
 
 ## Changelog
+Version 1.2.0
+- Changed Cosmetic methods to 3 methods
+- Added new methods for getting the lifetime cosmetics
+- Added typings
+- Added Safezones
+
 Version 1.1.0
 - Added support for Player Endpoints
 
