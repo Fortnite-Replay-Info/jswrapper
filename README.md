@@ -31,6 +31,9 @@ You can contact us on Discord if you want to work on features or push a pull req
 The project is lead by Xnocken and is also developped by Artlfmj and pxladin
 
 ## Changelog
+Version 1.3.0
+- Adds all Routes for https://funding.fortnite-replay.info/
+
 Version 1.2.0
 - Changed Cosmetic methods to 3 methods
 - Added new methods for getting the lifetime cosmetics

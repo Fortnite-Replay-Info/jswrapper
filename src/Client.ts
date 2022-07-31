@@ -6,6 +6,9 @@ import { Stats } from './types/stats.types';
 import { Matches } from './types/matches.types';
 import { Tournaments } from './types/tournaments.types';
 import { SafeZones } from './types/safezones.types';
+import { CurrentFunding } from './types/current.fundings.types';
+import { FundingInfo } from './types/info.fundings.types';
+import { FundingValues } from './types/values.fundings.types';
 
 export class Client {
     private readonly _apiKey: string;
@@ -183,6 +186,43 @@ export class Client {
             params: {
                 page
             }
+        })
+        .catch((e) => {
+            throw new Error(e);
+        })
+        return res.data;
+    }
+    /**
+     * Get Current Funding
+     * @returns Current Fundings Object
+     */
+    public async getCurrentFunding(): Promise<CurrentFunding> {
+        const res = await axios.get(`https://funding.fortnite-replay.info/current`, {
+        })
+        .catch((e) => {
+            throw new Error(e);
+        })
+        return res.data;
+    }
+    /**
+     * Get Current Fundings Info
+     * @returns Current fundings info
+     */
+    public async getFundingsInfo(): Promise<FundingInfo> {
+        const res = await axios.get(`https://funding.fortnite-replay.info/info`, {
+        })
+        .catch((e) => {
+            throw new Error(e);
+        })
+        return res.data;
+    }
+    /**
+     * Get All Values of the funding (Useful for Graphs)
+     * @param index Index of the funding, can be found in info
+     * @returns Funding Values for each match parsed
+     */
+    public async getFundingsValues(index : number):  Promise<FundingValues> {
+        const res = await axios.get(`https://funding.fortnite-replay.info/fundings`, {
         })
         .catch((e) => {
             throw new Error(e);
