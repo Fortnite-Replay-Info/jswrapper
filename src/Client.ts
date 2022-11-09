@@ -247,15 +247,19 @@ export class Client {
         if(!period) throw new Error("Please provide a period")
         if(period === "season" && !options.season) throw new Error("Please provide a season")
         if(period === "version" && !options.version) throw new Error("Please provide a version")
-        const req = await axios.post("http://cos-gen.fortnite-replay.info/stats", {
+        const req = await axios.post("https://cosm-gen.fortnite-replay.info/stats", {
             period,
-            cosmetics,
+            cosmetics : cosmetics.join(","),
             ...options
-        })
+        }, {
+            responseType: "arraybuffer"
+            })
+
         .catch((e) => {
             throw new Error(e);
         }
         )
         return req.data;
     }
+
 }
