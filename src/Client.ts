@@ -229,4 +229,37 @@ export class Client {
         })
         return res.data;
     }
+    /**
+     * Ever wanted to get a use ranking of cosmetics you choose? Ever wanted to make it your own custom design? Ever wanted to look for your favorite cosmetic?
+     * We've got you covered, make your own, or watch now!
+     * @param cosmetics Cosmeyic names or ids you want to get data from
+     * @param period Period to get the stats from
+     * @param options Additional options
+     * @returns Image
+     */
+    public async getRankingImage(cosmetics : string[], period: "lifetime" | "season" | "version", options : {
+        bg? : string,
+        season? : string,
+        version? : string,
+        textcolor? : string,
+        blockcolor? : string
+    }): Promise<Buffer> {
+        if(!period) throw new Error("Please provide a period")
+        if(period === "season" && !options.season) throw new Error("Please provide a season")
+        if(period === "version" && !options.version) throw new Error("Please provide a version")
+        const req = await axios.post("https://cosm-gen.fortnite-replay.info/stats", {
+            period,
+            cosmetics : cosmetics.join(","),
+            ...options
+        }, {
+            responseType: "arraybuffer"
+            })
+
+        .catch((e) => {
+            throw new Error(e);
+        }
+        )
+        return req.data;
+    }
+
 }
