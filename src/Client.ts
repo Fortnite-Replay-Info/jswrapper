@@ -53,7 +53,7 @@ export class Client {
      * @param type Type of the cosmetics to get
      * @param page Specific page of the cosmetics to get
      */
-    public async getCurrentCosmetics(type : string = "character", page: number = 0): Promise<Cosmetics> {
+    public async getCurrentCosmeticsv1(type : string = "character", page: number = 0): Promise<Cosmetics> {
         const res = await axios.get(`https://fortnite-replay.info/api/v1/cosmetics/current`, {
             params: {
                 type,
@@ -61,6 +61,37 @@ export class Client {
             }
         })
         .catch((e) => {
+            throw new Error(e);
+        })
+        return res.data;
+    }
+    /**
+     * Get Cosmetic Stats
+     * @param options Options to get cosmetics with
+     * @returns 
+     */
+    public async getCosmetics(options? : {
+        type?: string,
+        page?: number,
+        minimalData?: boolean,
+        version?: "recent" | string,
+        resultsPerPage?: number
+    }): Promise<Cosmetics> {
+        // Create an object with all defined options
+        let params = {} as {type : string, page : number, minimalData : boolean,  version : "recent" | string, resultsPerPage : number};
+        if(options?.type) params["type"] = options.type;
+        if(options?.page) params["page"] = options.page;
+        if(options?.minimalData) params["minimalData"] = options.minimalData;
+        if(options?.version) params["version"] = options.version;
+        if(options?.resultsPerPage) params["resultsPerPage"] = options.resultsPerPage;
+        const res = await axios.get(`https://fortnite-replay.info/api/v2/cosmetics`, {
+            params: {
+                ...params
+            }
+        })
+        .catch((e) => {
+            console.log(e.request)
+            console.error(e.response.data);
             throw new Error(e);
         })
         return res.data;
@@ -238,7 +269,7 @@ export class Client {
      * @returns Image
      */
     public async getRankingImage(cosmetics : string[], period: "lifetime" | "season" | "version", options : {
-        bg? : string,
+        bg? : any,
         season? : string,
         version? : string,
         textcolor? : string,
@@ -247,19 +278,33 @@ export class Client {
         if(!period) throw new Error("Please provide a period")
         if(period === "season" && !options.season) throw new Error("Please provide a season")
         if(period === "version" && !options.version) throw new Error("Please provide a version")
-        const req = await axios.post("https://cosm-gen.fortnite-replay.info/stats", {
-            period,
-            cosmetics : cosmetics.join(","),
-            ...options
-        }, {
-            responseType: "arraybuffer"
-            })
 
-        .catch((e) => {
-            throw new Error(e);
+        // Attach the bg as a file if provided to match multipart/form-data
+        if(options.bg) {
+            options.bg = {
+                value: options.bg,
+                options: {
+                    filename: 'stats.png',
+                    contentType: 'image/png'
+                }
+            }
         }
-        )
-        return req.data;
-    }
 
+        const res = await axios.post(`https://cosm-gen.fortnite-replay.info/stats`, {
+            cosmetics : cosmetics.join(","),
+            period,
+            options
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .catch((e) => {
+            console.log(e)
+            throw new Error(e);
+        })
+        console.log(res)
+        return res.data;
+    }
+    
 }
